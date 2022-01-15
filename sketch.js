@@ -12,7 +12,8 @@ var cloud_sprite;
 
 var invisibleGround_sprite;
 
-var obstacles, obstacle_sprite;
+var obstacles = [];
+var obstacle_sprite;
 
 var restart_image, restart_sprite;
 var gameOver_image, gameOver_sprite;
@@ -30,10 +31,9 @@ function preload() {
 
   gameOver_image = loadImage("gameOver.png");
   restart_image = loadImage("restart.png");
-
-  obstacles = createGroup();
+  
   for (var i = 1; i <= 6; i++) {
-    obstacles.add = loadImage('obstacle' + i + '.png');
+    obstacles.push(loadImage('obstacle' + i + '.png'));
   }
 
   sound_enums.checkPoint = loadSound('checkPoint.mp3');
@@ -99,7 +99,7 @@ function draw() {
     trex_sprite.velocityY++;
     ground_sprite.x = ground_sprite.x - 5;
     
-    if (trex_sprite.isTouching(obstacles)) {
+    if (trex_sprite.isTouching(ob_group)) {
       sound_enums.died.play();
       gameState = "end";
     }
@@ -144,25 +144,5 @@ function generateObstacles() {
 
     var rando = Math.round(random(1, 6));
     obstacle_sprite.addImage(obstacles[rando]);
-    // switch (rando) {
-    //   case 1:
-    //     obstacle_sprite.addImage(obstacle1);
-    //     break;
-    //   case 2:
-    //     obstacle_sprite.addImage(obstacle2);
-    //     break;
-    //   case 3:
-    //     obstacle_sprite.addImage(obstacle3);
-    //     break;
-    //   case 4:
-    //     obstacle_sprite.addImage(obstacle4);
-    //     break;
-    //   case 5:
-    //     obstacle_sprite.addImage(obstacle5);
-    //     break;
-    //   case 6:
-    //     obstacle_sprite.addImage(obstacle6);
-    //     break;
-    // }
   }
 }
