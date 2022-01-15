@@ -59,13 +59,12 @@ function setup() {
   trex_sprite.addAnimation('trexCollided', trexCollided_image);
   trex_sprite.addAnimation('trex', trex_image);
 
-  // trex_sprite.setCollider('rectangle', 0, 0, 400, trex_sprite.height);
-  // trex_sprite.debug = true;
+  trex_sprite.setCollider('rectangle', 0, 0, 50, trex_sprite.height);
 
   ground_sprite = createSprite(300, 190, 600, 10);
   ground_sprite.addImage("ground", ground_image);
 
-  invisibleGround_sprite = createSprite(300, 201, 600, 10);
+  invisibleGround_sprite = createSprite(300, 190, 600, 10);
   invisibleGround_sprite.visible = false;
 }
 
@@ -91,8 +90,9 @@ function draw() {
     generateClouds();
     if ((keyDown("space") || trex_sprite.isTouching(ob_group)) && trex_sprite.y > 165) {
       sound_enums.jumped.play();
+
       trex_sprite.velocityY = -14.25;
-      trex_sprite.velocityX++;
+      trex_sprite.velocityX = trex_sprite.velocityX + 2.5;
     } else trex_sprite.velocityX = 0;
     if (ground_sprite.x <= 0) ground_sprite.x = 300;
 
@@ -106,6 +106,7 @@ function draw() {
   } else if (gameState === "end") {
     trex_sprite.changeAnimation('trexCollided', trexCollided_image);
     trex_sprite.velocityY = 0;
+    trex_sprite.velocityX = 0;
 
     restart_sprite.visible = true;
     gameOver_sprite.visible = true;
@@ -138,11 +139,12 @@ function generateObstacles() {
     obstacle_sprite = createSprite(550, 171, 50, 50);
     obstacle_sprite.velocityX = -5;
     obstacle_sprite.scale = 0.475;
-
     obstacle_sprite.lifetime = 120;
-    ob_group.add(obstacle_sprite);
 
-    var rando = Math.round(random(1, 6));
-    obstacle_sprite.addImage(obstacles[rando]);
+    var randomObstacle = obstacles[Math.round(random(1, 6))];
+    if (!randomObstacle) return;
+
+    obstacle_sprite.addImage(randomObstacle);
+    ob_group.add(obstacle_sprite);
   }
 }
